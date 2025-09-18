@@ -1,0 +1,5 @@
+import java.io.IO;
+
+void main() {
+    IO.println({"hello world");
+}
