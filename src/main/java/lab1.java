@@ -7,7 +7,7 @@ void main() {
         int count = Integer.parseInt(scanner.nextLine());
 
         for (int i = 0; i < count; i++) {
-           IO.println("Please enter a number: ");
+            IO.println("Please enter a number: ");
             int num = Integer.parseInt(scanner.nextLine());
 
             if (num < 0) {
@@ -40,3 +40,4 @@ void main() {
 int square(int number) {
     return number * number;
 }
+
