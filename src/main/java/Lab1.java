@@ -7,7 +7,7 @@ void main() {
         int count = Integer.parseInt(scanner.nextLine());
 
         for (int i = 0; i < count; i++) {
-           IO.println("Enter a number: ");
+           IO.println("Please enter a number: ");
             int num = Integer.parseInt(scanner.nextLine());
 
             if (num < 0) {
