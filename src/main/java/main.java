@@ -1,2 +1,3 @@
-public class main {
+void main() {
+    IO.print("Hello, world!");
 }
