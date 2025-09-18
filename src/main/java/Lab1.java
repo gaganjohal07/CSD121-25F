@@ -19,10 +19,10 @@ void main() {
         }
 
         try (var writer = new FileWriter("output.txt")) {
-            for (int no : numbers) {
-                int result = square(no);
-                IO.println("Square of " + no + " is " + result);
-                writer.write("Square of " + no + " is " + result + "\n");
+            for (int n : numbers) {
+                int result = square(n);
+                IO.println("Square of " + n + " is " + result);
+                writer.write("Square of " + n + " is " + result + "\n");
             }
         }
 
