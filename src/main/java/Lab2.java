@@ -76,7 +76,8 @@ void main() {
 
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             // .setDefaultCloseOperation is an instance method
-            // JFrame.EXIT_ON_CLOSE is a static variable that tells it to close on exit
+            // JFrame.EXIT_ON_CLOSE is a static variable that tells it to close on exit (we cannot change the values )
+
 
             frame.setResizable(false);
             // makes it so you can’t resize the window
