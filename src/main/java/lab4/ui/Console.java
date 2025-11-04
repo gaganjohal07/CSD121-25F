@@ -1,8 +1,9 @@
 package lab4.ui;
 
 import lab4.game.*;
-
 import java.util.Scanner;
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.*;
 
 /**
  * Helper methods for doing console-based user interaction
@@ -19,7 +20,7 @@ public class Console {
      * @return The user's response
      */
     public static String prompt(String promptMessage) {
-        System.out.print(promptMessage);
+        System.out.print(colorize(promptMessage, CYAN_TEXT()));
         var scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
@@ -29,7 +30,7 @@ public class Console {
      * @param board A tictactoe game board
      */
     public static void showBoard(Board board) {
-        System.out.print(board);
+        System.out.println(colorize(board.toString(), YELLOW_TEXT()));
     }
 
     /**
@@ -41,38 +42,38 @@ public class Console {
      */
     public static Position promptForPosition(String prompt, Board board) {
 
-
         var scanner = new Scanner(System.in);
-        final String helpMessage = "Input must be in the format 'row column', e.g., '1 2' or 't m' for the top middle cell.";
+        final String helpMessage = colorize(
+                "Input must be in the format 'row column', e.g., '1 2' or 't m' for the top middle cell.",
+                RED_TEXT()
+        );
 
-        while ( true ) {
-            System.out.print(prompt);
+        while (true) {
+            System.out.print(colorize(prompt, CYAN_TEXT()));
             var input = scanner.nextLine().trim();
 
-            if ( input.length() != 3 ) {
+            if (input.length() != 3) {
                 System.out.println(helpMessage);
                 continue;
             }
 
             var parts = input.split(" ");
 
-            if ( parts.length != 2 ) {
+            if (parts.length != 2) {
                 System.out.println(helpMessage);
                 continue;
             }
 
-            // The .from methods may throw if the user entered invalid location text, so we try/catch
             try {
-
                 var pos = new Position(Row.from(parts[0]), Col.from(parts[1]));
 
                 if (board.isOccupiedAt(pos)) {
-                    System.out.println("That position is already taken.");
+                    System.out.println(colorize("That position is already taken.", RED_TEXT()));
                     continue;
                 }
 
                 return pos;
-            } catch ( IllegalArgumentException e ) {
+            } catch (IllegalArgumentException e) {
                 System.out.println(helpMessage);
             }
         }
