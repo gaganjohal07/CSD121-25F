@@ -1,17 +1,30 @@
 package lab5.ui;
 
+//import com.diogonunes.jcolor.AnsiFormat;
+
 import com.diogonunes.jcolor.AnsiFormat;
-import lab5.game.*;
-import lab5.players.*;
+import lab5.game.Board;
+import lab5.game.PlayerToken;
+import lab5.game.Position;
+import lab5.game.Row;
+import lab5.game.Col;
+
+import lab5.players.Player;
+//import lab5.players.HumanPlayer;
+//import lab5.players.LinusPlayer;
+//import lab5.players.OmolaPlayer;
 
 import java.util.Scanner;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 import static com.diogonunes.jcolor.Attribute.*;
 
+/**
+ * Console utility class for input/output operations used by the TicTacToe game.
+ */
 public class Console {
 
-    // Define some colors and text styles for use in the console
+    // Fancy colors for prompts and alerts
     private static final AnsiFormat fPrompt = new AnsiFormat(GREEN_TEXT(), BOLD());
     private static final AnsiFormat fAlert = new AnsiFormat(YELLOW_TEXT());
 
@@ -19,96 +32,99 @@ public class Console {
         System.out.println(message);
     }
 
-    /**
-     * Prompt the user for input using the given promptMessage
-     * @param promptMessage The message to prompt the user with
-     * @return The user's response
-     */
+    /** Generic string prompt */
     public static String prompt(String promptMessage) {
         System.out.print(fPrompt.format(promptMessage));
-        var scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
-    /**
-     * Display an alert message to the user
-     * @param message The message to display
-     */
+    /** Print alert messages in yellow */
     public static void printAlert(String message) {
         System.out.println(fAlert.format(message));
     }
 
     /**
-     * Repeatedly prompt the user to select a player for the given token
-     * until the select a valid one of a set of valid players
-     * @param whichPlayer The player for which to prompt
-     * @return A player object representing the user's chosen player
+     * Choose a player for the given token.
+     * Human players: enter a name (e.g., "Alice")
+     * Computer players: use commands "@linus" or "@omola"
      */
     public static Player promptForPlayer(PlayerToken whichPlayer) {
 
-        while ( true ) {
-            var input = prompt(fPrompt.format("Who will play " + whichPlayer + "? "));
+        while (true) {
+            String input = prompt("Who will play " + whichPlayer + "? ");
 
-            if ( input.startsWith("@") ) {
-                input = input.substring(1).toLowerCase(); // remove the '@' prefix
+            // Computer players begin with "@"
+            if (input.startsWith("@")) {
+                input = input.substring(1).toLowerCase();
 
-                switch ( input ) {
-                    // E.g.
-                    // case "randy" -> { return new Randy(); }
-                    default -> printAlert("TODO: Implement computer players");
+                switch (input) {
+
+//                    case "linus":
+//                        return new LinusPlayer();
+//
+//                    case "omola":
+//                        return new OmolaPlayer();
+
+                    default:
+                        printAlert("Unknown computer player: @" + input);
+                        printAlert("Available: @linus, @omola");
+                        break;
                 }
-            } else {
-                return new Player(input);
+            }
+            else {
+                // Human player
+                return null; //new HumanPlayer(input);
             }
         }
     }
 
-    /**
-     * Display the given game board
-     * @param board A tictactoe game board
-     */
+    /** Display board with colored X and O */
     public static void showBoard(Board board) {
-        var sb = new StringBuilder();
-        for (var c : board.toString().toCharArray()) {
-            if ( c == 'X' ) {
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : board.toString().toCharArray()) {
+            if (c == 'X') {
                 sb.append(colorize("X", BRIGHT_CYAN_TEXT()));
-            } else if ( c == 'O' ) {
+            } else if (c == 'O') {
                 sb.append(colorize("O", BRIGHT_MAGENTA_TEXT()));
             } else {
                 sb.append(c);
             }
         }
+
         System.out.println(sb);
     }
 
     /**
-     * Repeatedly prompt the user for a position on which to place their next token.
-     * If they enter an invalid response they are re-prompted.
-     * @param prompt The prompt to display to the user
-     * @return The position selected by the user
+     * Prompt the user for a valid board position.
+     * Accepts input like:
+     *  "1 3" or "t m" (top middle)
      */
     public static Position promptForPosition(String prompt) {
 
-        final String helpMessage = "Input must be in the format 'row column', e.g., '1 2' or 't m' for the top middle cell.";
+        final String helpMessage =
+                "Input must be 'row col', e.g. '1 2' or 't m'.";
 
-        while ( true ) {
-            var input = prompt(fPrompt.format(prompt));
+        while (true) {
+            String input = prompt(prompt);
 
-            if ( input.length() != 3 ) {
+            if (input.length() != 3) {
                 printAlert(helpMessage);
                 continue;
             }
 
-            var parts = input.split(" ");
+            String[] parts = input.split(" ");
 
-            if ( parts.length != 2 ) {
+            if (parts.length != 2) {
                 printAlert(helpMessage);
                 continue;
             }
 
             try {
                 return new Position(Row.from(parts[0]), Col.from(parts[1]));
-            } catch ( IllegalArgumentException e ) {
+            }
+            catch (IllegalArgumentException e) {
                 printAlert(helpMessage);
             }
         }

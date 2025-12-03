@@ -1,0 +1,1 @@
+i use chatgpt to complete the lab in a study mode.
